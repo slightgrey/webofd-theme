@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WOD_VERSION', '1.2.4' );
+define( 'WOD_VERSION', '1.2.5' );
 define( 'WOD_DIR', get_template_directory() );
 define( 'WOD_URI', get_template_directory_uri() );
 
