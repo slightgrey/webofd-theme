@@ -5,6 +5,7 @@ export const config = {
   showToc: true,
   xpPerLevel: 150,
   skillsShown: 5,
+  skillsExpanded: false, // skill tree starts with every card shown
 
   xpPerMinute: 15,
   quizXp: 40,

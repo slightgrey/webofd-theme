@@ -51,6 +51,7 @@ function wod_option_fields() {
 			'fields'      => array(
 				'xp_per_level'  => array( 'type' => 'number', 'label' => __( 'XP per level', 'web-of-d' ), 'help' => __( 'A post is worth 15 XP per minute of reading.', 'web-of-d' ), 'min' => 100, 'max' => 400, 'step' => 25, 'default' => 150 ),
 				'skills_shown'  => array( 'type' => 'number', 'label' => __( 'Skill cards shown', 'web-of-d' ), 'help' => __( 'Categories visible before "Show all".', 'web-of-d' ), 'min' => 3, 'max' => 12, 'step' => 1, 'default' => 5 ),
+				'skills_expanded' => array( 'type' => 'switch', 'label' => __( 'Show every skill card', 'web-of-d' ), 'help' => __( 'Open the skill tree fully expanded. Off: show the number above, with a "Show all" button. Readers can switch either way.', 'web-of-d' ), 'default' => false ),
 				'auto_complete' => array( 'type' => 'switch', 'label' => __( 'Clear missions automatically', 'web-of-d' ), 'help' => __( 'Award the post XP when the reader scrolls to the end. Off: they press Complete.', 'web-of-d' ), 'default' => true ),
 				'show_quiz'     => array( 'type' => 'switch', 'label' => __( 'Checkpoint quizzes', 'web-of-d' ), 'help' => __( 'Show the quiz card on posts that have one.', 'web-of-d' ), 'default' => true ),
 				'show_toc'      => array( 'type' => 'switch', 'label' => __( 'Waypoints', 'web-of-d' ), 'help' => __( 'The table of contents in the post sidebar.', 'web-of-d' ), 'default' => true ),

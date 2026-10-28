@@ -107,7 +107,7 @@ function Hero() {
 function SkillTree({ topic, onPick }) {
   const { posts, categories } = useData();
   const { done } = useGame();
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(config.skillsExpanded);
   const limit = config.skillsShown;
 
   const topicName = categories.find((c) => c.id === topic)?.name ?? "";

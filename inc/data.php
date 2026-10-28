@@ -373,6 +373,7 @@ function wod_game_config() {
 	return array(
 		'xpPerLevel'       => (int) wod_option( 'xp_per_level' ),
 		'skillsShown'      => (int) wod_option( 'skills_shown' ),
+		'skillsExpanded'   => (bool) wod_option( 'skills_expanded' ),
 		'autoComplete'     => (bool) wod_option( 'auto_complete' ),
 		'showQuiz'         => (bool) wod_option( 'show_quiz' ),
 		'showToc'          => (bool) wod_option( 'show_toc' ),
