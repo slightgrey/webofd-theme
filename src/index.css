@@ -1,0 +1,182 @@
+@import "@fontsource-variable/inter/wght.css";
+@import "tailwindcss";
+
+@source not "../dist";
+@source not "../scripts";
+
+/*
+ * Nocturne design-system tokens (design_handoff_wod_game_theme/_ds/.../styles.css).
+ * Declared in @theme so Tailwind emits them as :root variables: `bg-surface`,
+ * `text-accent-300` and `var(--color-accent)` all resolve to the same value.
+ * Tailwind's default palette is cleared so only these colours exist.
+ */
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-black: #000;
+
+  --color-bg: #161826;
+  --color-surface: #232532;
+  --color-text: #e9e9ed;
+  --color-accent: #9184d9;
+  --color-accent-2: #a7a1db;
+  --color-divider: color-mix(in srgb, #e9e9ed 16%, transparent);
+
+  --color-neutral-100: #f3f5fe;
+  --color-neutral-200: #e4e7f5;
+  --color-neutral-300: #cfd3e5;
+  --color-neutral-400: #b2b6ca;
+  --color-neutral-500: #9397ab;
+  --color-neutral-600: #75798c;
+  --color-neutral-700: #595d6c;
+  --color-neutral-800: #3f424d;
+  --color-neutral-900: #292b31;
+
+  --color-accent-100: #f5f4ff;
+  --color-accent-200: #e7e5fe;
+  --color-accent-300: #d2cefd;
+  --color-accent-400: #b5abfc;
+  --color-accent-500: #968ae0;
+  --color-accent-600: #796cbf;
+  --color-accent-700: #5d5294;
+  --color-accent-800: #423a6a;
+  --color-accent-900: #2b2741;
+
+  --color-accent-2-100: #f5f4ff;
+  --color-accent-2-200: #e7e5fe;
+  --color-accent-2-300: #d2cefd;
+  --color-accent-2-400: #b5afe8;
+  --color-accent-2-500: #9690c9;
+  --color-accent-2-600: #7972a9;
+  --color-accent-2-700: #5c5783;
+  --color-accent-2-800: #423e5d;
+  --color-accent-2-900: #2b293a;
+
+  --font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
+  --font-body: var(--font-sans);
+  --font-heading: var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+
+  --shadow-sm: 0 0 0 1px #3f424d;
+  --shadow-md: 0 0 0 1px #595d6c, 0 6px 18px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 0 0 1px #9397ab, 0 16px 40px rgba(0, 0, 0, 0.65);
+
+  --ease-pop: cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  --ease-fill: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Nocturne base rules. Headings are Inter 500, never bolder. */
+@layer base {
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    margin: 0 0 5.6px;
+  }
+  h1 { font-size: 42px; }
+  h2 { font-size: 32px; }
+  h3 { font-size: 25px; }
+  h4 { font-size: 20px; }
+  h5 { font-size: 16px; }
+  h6 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+  p { margin: 0 0 8.4px; }
+  a { color: var(--color-accent); text-underline-offset: 3px; }
+  a:hover { color: var(--color-accent-300); }
+  :focus { outline: none; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+}
+
+/* Freestanding rules fade out over 48px at each end (a Nocturne signature). */
+@utility rule-fade {
+  background: linear-gradient(to right, transparent, var(--color-divider) 48px, var(--color-divider) calc(100% - 48px), transparent);
+}
+
+/* Row separators: an 8% text rule painted along the bottom, fading at both ends. */
+@utility row-rule {
+  background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--color-text) 8%, transparent) 48px,
+      color-mix(in srgb, var(--color-text) 8%, transparent) calc(100% - 48px),
+      transparent
+    )
+    no-repeat bottom / 100% 1px;
+}
+
+@utility text-wrap-balance {
+  text-wrap: balance;
+}
+
+@utility text-wrap-pretty {
+  text-wrap: pretty;
+}
+
+/* Rendered post content (the_content), styled to match the prototype's sections. */
+@utility prose-wod {
+  & > * + h2 { margin-top: 36px; }
+  & h2 {
+    font-size: 24px;
+    margin: 0 0 14px;
+    scroll-margin-top: 90px;
+  }
+  & h3 {
+    font-size: 19px;
+    margin: 28px 0 12px;
+    scroll-margin-top: 90px;
+  }
+  & p,
+  & li {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--color-neutral-200);
+    text-wrap: pretty;
+  }
+  & p { margin: 0 0 16px; }
+  & ul,
+  & ol { margin: 0 0 16px; padding-left: 22px; }
+  & ul { list-style: disc; }
+  & ol { list-style: decimal; }
+  & li { margin-bottom: 6px; }
+  & li::marker { color: var(--color-neutral-600); }
+  & strong { font-weight: 500; color: var(--color-text); }
+  & :not(pre) > code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    padding: 1px 5px;
+    border-radius: var(--radius-sm);
+    background: var(--color-neutral-900);
+    color: var(--color-accent-200);
+  }
+  & blockquote {
+    margin: 0 0 16px;
+    padding: 2px 0 2px 16px;
+    box-shadow: inset 2px 0 0 var(--color-accent);
+    color: var(--color-neutral-300);
+  }
+  & img,
+  & video { max-width: 100%; height: auto; border-radius: var(--radius-md); }
+  & figure { margin: 8px 0 16px; }
+  & figcaption { font-size: 11px; margin-top: 3px; color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+  & hr { height: 1px; border: 0; margin: 32px 0; @apply rule-fade; }
+  & table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 0 0 16px; }
+  & th,
+  & td { text-align: left; padding: 6px; @apply row-rule; }
+}

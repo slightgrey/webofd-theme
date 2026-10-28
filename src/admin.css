@@ -1,0 +1,25 @@
+/*
+ * Appearance → Web Of D settings page and the Checkpoint quiz meta box.
+ * No preflight (would restyle all of wp-admin) and a `tw:` prefix so utilities can't
+ * collide with core/plugin class names. `important` lets utilities beat wp-admin's
+ * unlayered selectors.
+ */
+@import "tailwindcss/theme.css" prefix(tw);
+@import "tailwindcss/utilities.css" prefix(tw) important;
+
+@source not "../dist";
+@source not "../src";
+@source not "../scripts";
+
+@theme {
+  --color-night: #161826;
+  --color-accent: #9184d9;
+}
+
+.wod-admin .wod-input:focus {
+  outline: none;
+}
+
+.wod-admin :target {
+  scroll-margin-top: calc(var(--wp-admin--admin-bar--height, 32px) + 1.5rem);
+}
