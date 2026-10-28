@@ -12,11 +12,11 @@ export default function Footer() {
       </span>
       <div className="flex gap-4">
         {site.githubUrl && (
-          <a href={site.githubUrl} className={link}>
+          <a href={site.githubUrl} target="_blank" rel="noopener" className={link}>
             GitHub
           </a>
         )}
-        <a href={site.feedUrl} className={link}>
+        <a href={site.feedUrl} target="_blank" rel="noopener" className={link}>
           RSS
         </a>
       </div>
