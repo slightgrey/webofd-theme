@@ -7,6 +7,7 @@ import { useGame } from "../lib/game.jsx";
 import { Button, Card, Kicker, Tag } from "../components/ui.jsx";
 import { cx } from "../lib/cx.js";
 import CodeBlock from "../components/CodeBlock.jsx";
+import FeaturedImage from "../components/FeaturedImage.jsx";
 import Comments from "./Comments.jsx";
 
 export default function PostView({ post }) {
@@ -35,6 +36,7 @@ export default function PostView({ post }) {
           </div>
           <h1 className="m-0 mb-[18px] text-[44px] leading-[1.08] tracking-[-0.025em] text-wrap-balance max-sm:text-[32px]">{post.title}</h1>
           {post.excerpt && <p className="m-0 mb-10 text-[19px] leading-[1.55] text-neutral-300 text-wrap-pretty">{post.excerpt}</p>}
+          <FeaturedImage image={post.featured} />
           <div className="mb-10 h-px rule-fade" />
 
           <PostBody html={post.contentHtml} />

@@ -238,11 +238,35 @@ function wod_get_post_detail( $post ) {
 		wod_post_summary( $post ),
 		array(
 			'type'         => $post->post_type,
+			'featured'     => wod_featured_image( $post ),
 			'contentHtml'  => $content,
 			'toc'          => $toc,
 			'comments'     => 'post' === $post->post_type ? wod_get_comments( $post ) : array(),
 			'commentsOpen' => comments_open( $post ),
 		)
+	);
+}
+
+/**
+ * Full-width featured image for the top of a post or page, with a srcset so the browser
+ * picks the right size. The board uses the small `wod-card` crop instead.
+ *
+ * @param WP_Post $post Post.
+ * @return array|null
+ */
+function wod_featured_image( $post ) {
+	$id  = get_post_thumbnail_id( $post );
+	$src = $id ? wp_get_attachment_image_src( $id, 'large' ) : false;
+	if ( ! $src ) {
+		return null;
+	}
+
+	return array(
+		'src'    => $src[0],
+		'width'  => (int) $src[1],
+		'height' => (int) $src[2],
+		'srcset' => (string) wp_get_attachment_image_srcset( $id, 'large' ),
+		'alt'    => wod_plain_text( get_post_meta( $id, '_wp_attachment_image_alt', true ) ),
 	);
 }
 

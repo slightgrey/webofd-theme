@@ -2,6 +2,7 @@ import parse from "html-react-parser";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { useData } from "../lib/data.js";
 import { Button } from "../components/ui.jsx";
+import FeaturedImage from "../components/FeaturedImage.jsx";
 
 // Static pages and the 404 screen: same chrome as a post, without the game layer.
 export default function PageView({ post, notFound = !post, error = false }) {
@@ -21,6 +22,7 @@ export default function PageView({ post, notFound = !post, error = false }) {
           </p>
         ) : (
           <>
+            <FeaturedImage image={post.featured} />
             <div className="mb-10 h-px rule-fade" />
             <div className="prose-wod">{parse(post.contentHtml ?? "")}</div>
           </>
