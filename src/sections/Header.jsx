@@ -1,10 +1,15 @@
-import { ArrowUpRight, MagnifyingGlass } from "@phosphor-icons/react";
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router";
+import { ArrowUpRight, List, MagnifyingGlass, X } from "@phosphor-icons/react";
 import { config } from "../lib/config.js";
 import { useData } from "../lib/data.js";
 import { useGame } from "../lib/game.jsx";
 import { Button } from "../components/ui.jsx";
 
 const navLink = "text-[14px] text-inherit no-underline hover:text-accent";
+// Rows in the mobile menu panel.
+const menuLink =
+  "flex w-full items-center justify-between gap-3 border-0 bg-transparent px-1 py-3 text-left font-[inherit] text-[15px] leading-[inherit] text-text no-underline row-rule hover:text-accent";
 
 // The search shortcut is Cmd+K on Apple devices and Ctrl+K everywhere else.
 const isApple = /Mac|iPhone|iPad|iPod/.test(navigator.userAgentData?.platform ?? navigator.platform ?? "");
@@ -13,9 +18,32 @@ const shortcut = isApple ? "⌘K" : "Ctrl K";
 export default function Header({ onOpenTrophies, onOpenSearch }) {
   const { site } = useData();
   const { ach } = useGame();
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const header = useRef(null);
+  const hire = site.hireLabel && site.hireUrl;
+
+  // Close the mobile menu on navigation, Escape, or a tap outside the header.
+  useEffect(() => setMenuOpen(false), [location.pathname, location.search]);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+    const onPointer = (e) => header.current && !header.current.contains(e.target) && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [menuOpen]);
+
+  const openTrophies = () => {
+    setMenuOpen(false);
+    onOpenTrophies();
+  };
 
   return (
-    <header className="sticky top-[var(--wp-admin--admin-bar--height,0px)] z-20 bg-[color-mix(in_srgb,var(--color-bg)_78%,transparent)] backdrop-blur-[12px]">
+    <header ref={header} className="sticky top-[var(--wp-admin--admin-bar--height,0px)] z-20 bg-[color-mix(in_srgb,var(--color-bg)_78%,transparent)] backdrop-blur-[12px]">
       <nav className="mx-auto flex max-w-[1320px] items-center gap-5 px-6 py-3 text-text max-sm:gap-3 max-sm:px-4">
         <a href={site.homeUrl} className="mr-auto flex items-center gap-2.5 font-heading text-[14px] font-medium text-text no-underline hover:text-accent">
           <span className="grid size-7 place-items-center rounded-md text-[12px] text-accent shadow-[inset_0_0_0_1px_var(--color-accent)]">{site.mark}</span>
@@ -32,8 +60,8 @@ export default function Header({ onOpenTrophies, onOpenSearch }) {
             {item.title}
           </a>
         ))}
-        {site.hireLabel && site.hireUrl && (
-          <a href={site.hireUrl} target="_blank" rel="noopener" className={`${navLink} inline-flex items-center gap-[5px] max-sm:hidden`}>
+        {hire && (
+          <a href={site.hireUrl} target="_blank" rel="noopener" className={`${navLink} inline-flex items-center gap-[5px] max-md:hidden`}>
             {site.hireLabel}
             <ArrowUpRight size={11} />
           </a>
@@ -43,8 +71,44 @@ export default function Header({ onOpenTrophies, onOpenSearch }) {
           <span className="text-[11px] max-sm:hidden">{shortcut}</span>
         </Button>
         <XpChip onClick={onOpenTrophies} />
+        <Button
+          variant="secondary"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-expanded={menuOpen}
+          aria-controls="wod-mobile-menu"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          className="size-[34px] p-0 text-neutral-300 md:hidden"
+        >
+          {menuOpen ? <X size={16} /> : <List size={16} />}
+        </Button>
       </nav>
       <div className="h-px rule-fade" />
+
+      {menuOpen && (
+        <nav
+          id="wod-mobile-menu"
+          aria-label="Menu"
+          className="absolute inset-x-0 top-full bg-bg px-4 pt-1 pb-4 shadow-[0_16px_40px_rgba(0,0,0,0.5)] md:hidden"
+        >
+          <a href={site.homeUrl} className={menuLink}>
+            Missions
+          </a>
+          <button type="button" onClick={openTrophies} className={menuLink}>
+            Trophies <span className="text-[13px] text-neutral-500">{ach.length} unlocked</span>
+          </button>
+          {(site.menu ?? []).map((item) => (
+            <a key={item.id} href={item.url} target={item.target || undefined} className={menuLink}>
+              {item.title}
+            </a>
+          ))}
+          {hire && (
+            <a href={site.hireUrl} target="_blank" rel="noopener" className={menuLink}>
+              {site.hireLabel}
+              <ArrowUpRight size={14} className="text-neutral-500" />
+            </a>
+          )}
+        </nav>
+      )}
     </header>
   );
 }
