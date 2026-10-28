@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { appData, enrich } from "./data.js";
 
-const { site, categories, rest, view: initialView, post: initialPost } = appData;
+const { site, categories, rest, view: initialView, categoryId: initialCategoryId, post: initialPost } = appData;
 
 const home = new URL(site.homeUrl ?? "/", window.location.href);
 
@@ -32,6 +32,18 @@ export function toRoutePath(href) {
   return path + url.search + url.hash;
 }
 
+/**
+ * Only the query parameters that pick content. Tracking and cache-busting extras
+ * (?utm_source=…, ?fbclid=…, ?no-cache) must not turn the home page into an unknown URL.
+ */
+function routeSearch(search) {
+  const all = new URLSearchParams(search);
+  const kept = new URLSearchParams();
+  for (const key of ROUTE_PARAMS) if (all.has(key)) kept.set(key, all.get(key));
+  const query = kept.toString();
+  return query ? "?" + query : "";
+}
+
 const categoryByPath = new Map(
   categories.map((c) => {
     const path = toRoutePath(c.url);
@@ -43,6 +55,7 @@ const categoryByPath = new Map(
  * What a router location shows: the board, a category board, or something to load from WordPress.
  */
 export function matchRoute({ pathname, search }) {
+  search = routeSearch(search);
   const key = trimSlash(pathname) + search;
   if (key === "/") return { view: "home" };
 
@@ -51,6 +64,20 @@ export function matchRoute({ pathname, search }) {
   if (category) return { view: "category", category };
 
   return { view: "remote", url: home.origin + (basename === "/" ? "" : basename) + pathname + search };
+}
+
+/**
+ * What WordPress rendered for the page that was actually loaded. Trusted over matchRoute() for
+ * that first history entry, so URLs the app can't resolve itself (tag and date archives, extra
+ * query strings) never bounce between "not found" and a reload.
+ */
+export function serverRoute() {
+  if (initialView === "home") return { view: "home" };
+  if (initialView === "category") {
+    const category = categories.find((c) => c.id === initialCategoryId);
+    if (category) return { view: "category", category };
+  }
+  return { view: "remote", url: currentUrl };
 }
 
 /**
@@ -75,7 +102,7 @@ const settled = new Map();
 const pending = new Map();
 
 // The page WordPress rendered is already in window.wodData.
-const currentUrl = window.location.origin + window.location.pathname + window.location.search;
+const currentUrl = window.location.origin + window.location.pathname + routeSearch(window.location.search);
 if (initialPost) settled.set(currentUrl, { view: initialView, title: document.title, post: initialPost });
 else if (initialView === "404") settled.set(currentUrl, { view: "404", title: document.title, post: null });
 

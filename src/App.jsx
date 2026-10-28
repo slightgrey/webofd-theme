@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, useLocation } from "react-router";
 import { useData } from "./lib/data.js";
-import { basename, matchRoute, useDocumentTitle, useRemoteView } from "./lib/routes.js";
+import { basename, matchRoute, serverRoute, useDocumentTitle, useRemoteView } from "./lib/routes.js";
 import SpaLinks from "./components/SpaLinks.jsx";
 import BackToTop from "./components/BackToTop.jsx";
 import Header from "./sections/Header.jsx";
@@ -68,7 +68,8 @@ function Shell() {
 function View() {
   const { site } = useData();
   const location = useLocation();
-  const route = matchRoute(location);
+  // "default" is the history entry WordPress rendered; later entries come from client navigation.
+  const route = location.key === "default" ? serverRoute() : matchRoute(location);
 
   if (route.view === "home") return <BoardView key="home" title={site.homeTitle} />;
   if (route.view === "category") {
@@ -88,9 +89,14 @@ function RemoteView({ url }) {
   const result = state.result;
   useDocumentTitle(result?.title);
 
-  // Not a post or page (a tag archive, a date archive…): let WordPress render it.
+  // Not a post or page (a tag archive, a date archive…): let WordPress render it. The address bar
+  // already shows this URL, so clear the router's history state first; the reloaded page is then the
+  // "default" entry and renders WordPress's own view instead of trying this lookup again.
   useEffect(() => {
-    if (state.status === "ready" && !result) window.location.assign(url);
+    if (state.status === "ready" && !result) {
+      window.history.replaceState(null, "", url);
+      window.location.reload();
+    }
   }, [state.status, result, url]);
 
   if (state.status === "error") return <PageView notFound error />;
