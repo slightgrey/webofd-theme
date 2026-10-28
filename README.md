@@ -41,6 +41,6 @@ After the first load, React Router (`BrowserRouter`, with the WordPress home pat
 | `npm run lint` | ESLint |
 | `npm run env:start` / `env:stop` | Local WordPress via wp-env (Docker) at http://localhost:8888, admin / password |
 | `npm run seed` | Activates the theme in wp-env and creates 8 demo missions with categories, quizzes, comments and featured images (dev only, not in the zip) |
-| `php scripts/seed.php https://vincent.test` | Same demo content on a local install without WP-CLI (theme must be active). Leaves site title, permalinks and users alone |
+| `php scripts/seed.php https://your-site.test` | Same demo content on a local install without WP-CLI (theme must be active). Leaves site title, permalinks and users alone. The URL is only needed when `wp-config.php` builds the site URL from the request (`$_SERVER['HTTP_HOST']`); otherwise it can be left off |
 | `npm run version:patch\|minor\|major` | Bumps `style.css`, `WOD_VERSION` and `package.json` |
 | `npm run bundle` | Builds and writes `web-of-d-vX.Y.Z.zip` |

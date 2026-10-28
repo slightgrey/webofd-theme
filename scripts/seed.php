@@ -7,7 +7,10 @@
  * (= wp-env run cli wp eval-file wp-content/wod-seed/seed.php)
  *
  * Or against a local install without WP-CLI (e.g. Laragon), from the theme folder:
- *   php scripts/seed.php https://vincent.test
+ *   php scripts/seed.php https://your-site.test
+ *
+ * The URL's scheme and host fill $_SERVER for installs whose wp-config.php builds
+ * WP_HOME/WP_SITEURL from the request. Otherwise it can be left off.
  *
  * Safe to re-run: posts whose slug already exists are skipped.
  *
