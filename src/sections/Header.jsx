@@ -17,7 +17,7 @@ const shortcut = isApple ? "⌘K" : "Ctrl K";
 
 export default function Header({ onOpenTrophies, onOpenSearch }) {
   const { site } = useData();
-  const { ach } = useGame();
+  const { achCount } = useGame();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const header = useRef(null);
@@ -53,7 +53,7 @@ export default function Header({ onOpenTrophies, onOpenSearch }) {
           Missions
         </a>
         <button type="button" onClick={onOpenTrophies} className={`${navLink} max-md:hidden border-0 bg-transparent p-0 font-[inherit] leading-[inherit]`}>
-          Trophies <span className="text-neutral-500">{ach.length}</span>
+          Trophies <span className="text-neutral-500">{achCount}</span>
         </button>
         {(site.menu ?? []).map((item) => (
           <a key={item.id} href={item.url} target={item.target || undefined} className={`${navLink} max-md:hidden`}>
@@ -94,7 +94,7 @@ export default function Header({ onOpenTrophies, onOpenSearch }) {
             Missions
           </a>
           <button type="button" onClick={openTrophies} className={menuLink}>
-            Trophies <span className="text-[13px] text-neutral-500">{ach.length} unlocked</span>
+            Trophies <span className="text-[13px] text-neutral-500">{achCount} unlocked</span>
           </button>
           {(site.menu ?? []).map((item) => (
             <a key={item.id} href={item.url} target={item.target || undefined} className={menuLink}>

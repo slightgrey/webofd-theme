@@ -54,7 +54,7 @@ function wod_option_fields() {
 				'auto_complete' => array( 'type' => 'switch', 'label' => __( 'Clear missions automatically', 'web-of-d' ), 'help' => __( 'Award the post XP when the reader scrolls to the end. Off: they press Complete.', 'web-of-d' ), 'default' => true ),
 				'show_quiz'     => array( 'type' => 'switch', 'label' => __( 'Checkpoint quizzes', 'web-of-d' ), 'help' => __( 'Show the quiz card on posts that have one.', 'web-of-d' ), 'default' => true ),
 				'show_toc'      => array( 'type' => 'switch', 'label' => __( 'Waypoints', 'web-of-d' ), 'help' => __( 'The table of contents in the post sidebar.', 'web-of-d' ), 'default' => true ),
-				'shop_category' => array( 'type' => 'category', 'label' => __( 'Shop category', 'web-of-d' ), 'help' => __( 'Used by the "Open shop" quest and the Shopkeeper trophy.', 'web-of-d' ), 'default' => 'woocommerce' ),
+				'shop_category' => array( 'type' => 'category', 'label' => __( 'Shop category', 'web-of-d' ), 'help' => __( 'Readers clear every post in this category for a quest and a trophy, named after it ("Open shop" and "Shopkeeper" for WooCommerce). Choose None to hide both.', 'web-of-d' ), 'default' => 'woocommerce' ),
 			),
 		),
 		'behavior' => array(

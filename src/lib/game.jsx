@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from "react";
-import { config, STORAGE_KEY, TROPHIES } from "./config.js";
-import { levelOf, quizRight, rankOf, trophyChecks, xpOf } from "./progress.js";
+import { config, STORAGE_KEY } from "./config.js";
+import { levelOf, quizRight, rankOf, trophyChecks, trophyList, xpOf } from "./progress.js";
 import { useData } from "./data.js";
 
 /*
@@ -46,7 +46,7 @@ function commit(state, posts, patch, title, sub) {
   const xpBefore = xpOf(posts, state);
   const xpAfter = xpOf(posts, next);
   const checks = trophyChecks(posts, next);
-  const newly = TROPHIES.filter((t) => checks[t.id] && !state.ach.includes(t.id));
+  const newly = trophyList(posts).filter((t) => checks[t.id] && !state.ach.includes(t.id));
   next.ach = [...state.ach, ...newly.map((t) => t.id)];
 
   let toast = { title, sub };
@@ -142,6 +142,7 @@ export function GameProvider({ children }) {
   }, []);
 
   const value = useMemo(() => {
+    const trophies = trophyList(posts);
     const xp = xpOf(posts, state);
     const level = levelOf(xp);
     const xpInLevel = xp % config.xpPerLevel;
@@ -154,6 +155,9 @@ export function GameProvider({ children }) {
       xpInLevel,
       toNext: config.xpPerLevel - xpInLevel,
       quizCorrect: quizRight(state.quiz),
+      // Earnable trophies, and how many of those are unlocked (a hidden shop trophy never counts).
+      trophies,
+      achCount: state.ach.filter((id) => trophies.some((t) => t.id === id)).length,
       complete,
       answer,
       addComment,

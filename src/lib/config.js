@@ -10,7 +10,7 @@ export const config = {
   quizXp: 40,
   commentXp: 10,
   autoCompleteAt: 0.92,
-  shopCategorySlug: "woocommerce", // "Open shop" quest and "Shopkeeper" trophy
+  shopCategorySlug: "woocommerce", // the "shop" quest and trophy; see shopTrack() in progress.js
   spa: true, // switch views without a full page load
   ...window.wodData?.config,
 };

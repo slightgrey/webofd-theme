@@ -1,22 +1,21 @@
 import { Lock, Trophy } from "@phosphor-icons/react";
-import { TROPHIES } from "../lib/config.js";
 import { useGame } from "../lib/game.jsx";
 import { Button, Dialog } from "../components/ui.jsx";
 import { cx } from "../lib/cx.js";
 
 export default function TrophyModal({ onClose }) {
-  const { ach, reset } = useGame();
+  const { ach, achCount, trophies, reset } = useGame();
 
   return (
     <Dialog onClose={onClose} label="Trophy case" className="w-[min(600px,100%)] gap-4">
       <div className="flex items-baseline justify-between">
         <div className="font-heading text-[20px] font-medium">Trophy case</div>
         <span className="text-[12px] text-neutral-500">
-          {ach.length} of {TROPHIES.length} unlocked
+          {achCount} of {trophies.length} unlocked
         </span>
       </div>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-2.5">
-        {TROPHIES.map((t) => {
+        {trophies.map((t) => {
           const on = ach.includes(t.id);
           return (
             <div

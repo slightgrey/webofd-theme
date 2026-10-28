@@ -3,7 +3,7 @@ import { CheckCircle, Circle, Lightning, X } from "@phosphor-icons/react";
 import { config } from "../lib/config.js";
 import { useData } from "../lib/data.js";
 import { useGame } from "../lib/game.jsx";
-import { quizRight, shopPosts, topicsCleared } from "../lib/progress.js";
+import { quizRight, shopTrack, topicsCleared } from "../lib/progress.js";
 import { Button, Card, Kicker, Tag } from "../components/ui.jsx";
 import { cx } from "../lib/cx.js";
 
@@ -56,13 +56,13 @@ export default function Board({ categoryId = null }) {
 
 function Hero() {
   const { site, posts } = useData();
-  const { xp, level, rank, nextRank, toNext, done, quizCorrect, ach } = useGame();
+  const { xp, level, rank, nextRank, toNext, done, quizCorrect, achCount } = useGame();
   const cleared = posts.filter((p) => done.includes(p.id)).length;
 
   const stats = [
     [cleared, "/" + posts.length, "Missions"],
     [quizCorrect, null, "Quizzes aced"],
-    [ach.length, null, "Trophies"],
+    [achCount, null, "Trophies"],
   ];
 
   return (
@@ -228,13 +228,13 @@ function Quests() {
   const { done, quiz } = useGame();
 
   const quests = useMemo(() => {
-    const shop = shopPosts(posts);
+    const shop = shopTrack(posts);
     const list = [
       ["Branch out", "Clear missions in 3 different topics", topicsCleared(posts, done), 3, "Full stack"],
       ["Pop quiz", "Ace 3 checkpoint quizzes", quizRight(quiz), 3, "Code reviewer"],
     ];
-    if (shop.length) {
-      list.push(["Open shop", "Clear every WooCommerce mission", shop.filter((p) => done.includes(p.id)).length, shop.length, "Shopkeeper"]);
+    if (shop) {
+      list.push([shop.quest, shop.desc, shop.posts.filter((p) => done.includes(p.id)).length, shop.posts.length, shop.trophy]);
     }
     return list;
   }, [posts, done, quiz]);
