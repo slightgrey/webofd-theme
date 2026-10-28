@@ -14,8 +14,8 @@ The UI is a React app (Vite, Tailwind 4, Nocturne design tokens). WordPress owns
 | **Post:** tags, difficulty, XP and read time, with Waypoints (table of contents) and reading progress in the sidebar. | **Checkpoint quiz:** one try per post. A correct answer adds bonus XP; reaching the end of the post clears the mission. |
 | ![The trophy case dialog with five of eight trophies unlocked](docs/screenshots/trophies.png) | ![The search dialog filtering missions by "woo"](docs/screenshots/search.png) |
 | **Trophy case:** eight trophies, locked ones dimmed, plus a progress reset. | **Search:** Ctrl+K (⌘K on Mac) filters missions by title, excerpt and category as you type. |
-| ![Appearance → Web Of D settings page](docs/screenshots/settings.png) | ![The Checkpoint quiz meta box in the post editor](docs/screenshots/quiz-meta-box.png) <br> <img src="docs/screenshots/mobile.png" alt="The mission board on a phone" width="240"> |
-| **Settings:** Appearance → Web Of D for homepage copy, links, game rules, navigation and performance. | **Quiz meta box** in the post editor, and the board on a phone. |
+| ![Appearance → Web Of D settings page](docs/screenshots/settings.png) | ![The Checkpoint quiz meta box in the post editor](docs/screenshots/quiz-meta-box.png) <br> <img src="docs/screenshots/mobile.png" alt="The mission board on a phone with the menu open" width="240"> |
+| **Settings:** Appearance → Web Of D for homepage copy, links, game rules, navigation and performance. | **Quiz meta box** in the post editor, and the board on a phone with the menu open (Missions, Trophies, header links, Hire Me). |
 
 ## WordPress additions
 
