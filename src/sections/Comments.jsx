@@ -3,6 +3,7 @@ import { Heart } from "@phosphor-icons/react";
 import { config } from "../lib/config.js";
 import { formatDate, initials, useData } from "../lib/data.js";
 import { restUrl } from "../lib/routes.js";
+import { useRecaptcha } from "../lib/recaptcha.js";
 import { useGame } from "../lib/game.jsx";
 import { Button, Card, Tag } from "../components/ui.jsx";
 import { cx } from "../lib/cx.js";
@@ -18,6 +19,7 @@ export default function Comments({ post }) {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const captcha = useRecaptcha("comments");
   const textarea = useRef(null);
 
   const mine = local[post.id] ?? [];
@@ -30,7 +32,7 @@ export default function Comments({ post }) {
     ...mine.filter((c) => !serverIds.has(c.id)).map((c) => ({ ...c, mine: true, isAuthor: !!c.author && c.author === post.author })),
   ];
   const joined = mine.length > 0;
-  const disabled = sending || !cName.trim() || !cEmail.trim() || !text.trim();
+  const disabled = sending || !captcha.ready || !cName.trim() || !cEmail.trim() || !text.trim();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -38,11 +40,13 @@ export default function Comments({ post }) {
     setSending(true);
     setError("");
     try {
+      const token = await captcha.getToken();
+      if (captcha.showWidget && !token) throw new Error("Please tick the reCAPTCHA box.");
       const res = await fetch(restUrl("wp/v2/comments"), {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json", "X-WP-Nonce": rest.nonce },
-        body: JSON.stringify({ post: post.id, author_name: cName.trim(), author_email: cEmail.trim(), content: text.trim() }),
+        body: JSON.stringify({ post: post.id, author_name: cName.trim(), author_email: cEmail.trim(), content: text.trim(), recaptcha_token: token || undefined }),
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.message || "Your comment couldn't be posted. Try again in a moment.");
@@ -51,6 +55,7 @@ export default function Comments({ post }) {
     } catch (err) {
       setError(err.message);
     } finally {
+      captcha.reset();
       setSending(false);
     }
   };
@@ -82,6 +87,7 @@ export default function Comments({ post }) {
             <input className={cx(input, "max-w-[260px]")} type="email" placeholder="Email (not shown)" aria-label="Email" autoComplete="email" value={cEmail} onChange={(e) => setIdentity({ cEmail: e.target.value })} />
           </div>
           <textarea ref={textarea} className={cx(input, "min-h-[90px] resize-y")} placeholder="Add to the discussion…" aria-label="Comment" value={text} onChange={(e) => setText(e.target.value)} />
+          {captcha.showWidget && <div ref={captcha.containerRef} className="min-h-[78px]" />}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className={cx("text-[12px]", error ? "text-accent-300" : "text-neutral-500")} role={error ? "alert" : undefined}>
               {error || "Be kind. Code in backticks."}
@@ -90,6 +96,19 @@ export default function Comments({ post }) {
               {sending ? "Posting…" : "Post comment"}
             </Button>
           </div>
+          {captcha.isV3 && (
+            <p className="m-0 text-[11px] text-neutral-600">
+              This site is protected by reCAPTCHA and the Google{" "}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" className="text-neutral-500 hover:text-accent">
+                Privacy Policy
+              </a>{" "}
+              and{" "}
+              <a href="https://policies.google.com/terms" target="_blank" rel="noopener" className="text-neutral-500 hover:text-accent">
+                Terms of Service
+              </a>{" "}
+              apply.
+            </p>
+          )}
         </Card>
       ) : (
         <p className="mb-3 text-[13px] text-neutral-500">Comments are closed.</p>

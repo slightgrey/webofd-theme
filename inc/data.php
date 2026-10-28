@@ -378,6 +378,7 @@ function wod_game_config() {
 		'showToc'          => (bool) wod_option( 'show_toc' ),
 		'shopCategorySlug' => (string) wod_option( 'shop_category' ),
 		'spa'              => (bool) wod_option( 'spa' ),
+		'recaptcha'        => wod_recaptcha_client_config(),
 	);
 }
 

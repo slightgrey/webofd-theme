@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Field definitions, grouped by section.
  *
- * Types: text, url, textarea, number (min/max/step), switch, category (slug picker).
+ * Types: text, url, password, textarea, number (min/max/step), switch, choice (choices), category (slug picker).
  * Optional field keys: help, placeholder. Optional section keys: description, icon (dashicon).
  *
  * @return array<string, array{title: string, fields: array<string, array>}>
@@ -65,6 +65,20 @@ function wod_option_fields() {
 				'spa' => array( 'type' => 'switch', 'label' => __( 'Instant page changes', 'web-of-d' ), 'help' => __( 'Open posts, categories and pages without a full reload. Turn off to use normal page loads.', 'web-of-d' ), 'default' => true ),
 			),
 		),
+		'recaptcha'   => array(
+			'title'       => __( 'reCAPTCHA', 'web-of-d' ),
+			'description' => __( 'Spam protection for guest comments and the login screens. Only enforced when both keys are set. Locked out? Add define( \'WOD_RECAPTCHA_DISABLED\', true ); to wp-config.php.', 'web-of-d' ),
+			'icon'        => 'dashicons-shield',
+			'fields'      => array(
+				'recaptcha_version'      => array( 'type' => 'choice', 'label' => __( 'Version', 'web-of-d' ), 'choices' => array( 'v3' => __( 'Invisible (v3)', 'web-of-d' ), 'v2' => __( 'Checkbox (v2)', 'web-of-d' ) ), 'help' => __( 'Must match the key type you created at google.com/recaptcha/admin.', 'web-of-d' ), 'default' => wod_legacy_recaptcha_option( 'vl_cf_recaptcha_version', 'v3' ) ),
+				'recaptcha_site'         => array( 'type' => 'text', 'label' => __( 'Site key', 'web-of-d' ), 'default' => wod_legacy_recaptcha_option( 'vl_cf_recaptcha_site', '' ) ),
+				'recaptcha_secret'       => array( 'type' => 'password', 'label' => __( 'Secret key', 'web-of-d' ), 'help' => __( 'Leave blank to turn reCAPTCHA off on every form.', 'web-of-d' ), 'default' => wod_legacy_recaptcha_option( 'vl_cf_recaptcha_secret', '' ) ),
+				'recaptcha_comments'     => array( 'type' => 'switch', 'label' => __( 'Comments', 'web-of-d' ), 'help' => __( 'Guests must pass reCAPTCHA to comment. Logged-in users skip the check.', 'web-of-d' ), 'default' => '1' === wod_legacy_recaptcha_option( 'vl_recaptcha_comments', '1' ) ),
+				'recaptcha_login'        => array( 'type' => 'switch', 'label' => __( 'Login form', 'web-of-d' ), 'help' => __( 'Test it in a private window before logging out.', 'web-of-d' ), 'default' => '1' === wod_legacy_recaptcha_option( 'vl_recaptcha_login', '0' ) ),
+				'recaptcha_register'     => array( 'type' => 'switch', 'label' => __( 'Registration form', 'web-of-d' ), 'help' => get_option( 'users_can_register' ) ? '' : __( 'Registration is currently off in Settings → General.', 'web-of-d' ), 'default' => '1' === wod_legacy_recaptcha_option( 'vl_recaptcha_register', '0' ) ),
+				'recaptcha_lostpassword' => array( 'type' => 'switch', 'label' => __( 'Lost password form', 'web-of-d' ), 'default' => '1' === wod_legacy_recaptcha_option( 'vl_recaptcha_lostpassword', '0' ) ),
+			),
+		),
 		'performance' => array(
 			'title'       => __( 'Performance', 'web-of-d' ),
 			'description' => __( 'Site-wide output settings. These do not change how the site looks.', 'web-of-d' ),
@@ -77,6 +91,18 @@ function wod_option_fields() {
 			),
 		),
 	);
+}
+
+/**
+ * A reCAPTCHA setting saved by the vincelayte React theme, used as this theme's default so
+ * existing keys and switches carry over without re-entering them.
+ *
+ * @param string $name    Option name in the old theme.
+ * @param string $default Fallback.
+ * @return string
+ */
+function wod_legacy_recaptcha_option( $name, $default ) {
+	return (string) get_option( $name, $default );
 }
 
 /**
@@ -188,6 +214,10 @@ function wod_sanitize_options( $input ) {
 					$clean[ $key ] = sanitize_title( $raw );
 					break;
 
+				case 'choice':
+					$clean[ $key ] = array_key_exists( $raw, $field['choices'] ) ? $raw : $field['default'];
+					break;
+
 				default:
 					$clean[ $key ] = sanitize_text_field( $raw );
 			}
@@ -253,6 +283,18 @@ function wod_render_option_field( $key, $field ) {
 				<span class="tw:inline tw:w-10 tw:text-xs tw:font-semibold tw:uppercase tw:tracking-wider tw:text-neutral-400 tw:peer-checked:hidden"><?php esc_html_e( 'Off', 'web-of-d' ); ?></span>
 			</span>
 			<?php
+			break;
+
+		case 'choice':
+			printf( '<select id="%s" name="%s" class="%s">', esc_attr( $id ), esc_attr( $name ), esc_attr( $input ) );
+			foreach ( $field['choices'] as $choice => $choice_label ) {
+				printf( '<option value="%s" %s>%s</option>', esc_attr( $choice ), selected( $value, $choice, false ), esc_html( $choice_label ) );
+			}
+			echo '</select>';
+			break;
+
+		case 'password':
+			printf( '<input type="password" id="%s" name="%s" value="%s" autocomplete="off" class="%s">', esc_attr( $id ), esc_attr( $name ), esc_attr( $value ), esc_attr( $input ) );
 			break;
 
 		case 'url':

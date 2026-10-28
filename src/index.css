@@ -104,6 +104,11 @@
   button:disabled { cursor: not-allowed; }
 }
 
+/* The v3 badge would sit on the back-to-top button; the comment form shows Google's attribution text instead. */
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
 /* Freestanding rules fade out over 48px at each end (a Nocturne signature). */
 @utility rule-fade {
   background: linear-gradient(to right, transparent, var(--color-divider) 48px, var(--color-divider) calc(100% - 48px), transparent);

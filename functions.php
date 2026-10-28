@@ -15,6 +15,7 @@ require WOD_DIR . '/inc/setup.php';
 require WOD_DIR . '/inc/options.php';
 require WOD_DIR . '/inc/meta.php';
 require WOD_DIR . '/inc/rest.php';
+require WOD_DIR . '/inc/recaptcha.php';
 require WOD_DIR . '/inc/data.php';
 require WOD_DIR . '/inc/vite.php';
 require WOD_DIR . '/inc/cleanup.php';
