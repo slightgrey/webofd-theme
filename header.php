@@ -12,11 +12,11 @@ defined( 'ABSPATH' ) || exit;
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="theme-color" content="#161826">
+	<meta name="theme-color" content="#e9e9eb">
 	<?php
 	/*
 	 * Set data-theme before first paint so there's no flash of the wrong theme.
-	 * A saved choice (localStorage "wod-theme") wins; otherwise follow the OS setting.
+	 * A saved choice (localStorage "wod-theme") wins; otherwise the default is light.
 	 * inc/minify.php leaves <script> contents untouched.
 	 */
 	?>
@@ -24,9 +24,7 @@ defined( 'ABSPATH' ) || exit;
 	(function () {
 		var t;
 		try { t = localStorage.getItem('wod-theme'); } catch (e) {}
-		if (t !== 'light' && t !== 'dark') {
-			t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-		}
+		if (t !== 'light' && t !== 'dark') t = 'light';
 		document.documentElement.setAttribute('data-theme', t);
 		var m = document.querySelector('meta[name="theme-color"]');
 		if (m) m.setAttribute('content', t === 'light' ? '#e9e9eb' : '#161826');

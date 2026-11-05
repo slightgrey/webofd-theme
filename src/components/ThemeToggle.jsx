@@ -9,7 +9,7 @@ import { Button } from "./ui.jsx";
  */
 export const THEME_KEY = "wod-theme";
 
-const current = () => (document.documentElement.dataset.theme === "light" ? "light" : "dark");
+const current = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "light");
 
 export function ThemeToggle({ className }) {
   const [theme, setTheme] = useState(current);
