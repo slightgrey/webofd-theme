@@ -37,7 +37,7 @@ export default function PostView({ post }) {
           <h1 className="m-0 mb-[18px] text-[44px] leading-[1.08] tracking-[-0.025em] text-wrap-balance max-sm:text-[32px]">{post.title}</h1>
           {post.excerpt && <p className="m-0 mb-10 text-[19px] leading-[1.55] text-neutral-300 text-wrap-pretty">{post.excerpt}</p>}
           <FeaturedImage image={post.featured} />
-          <div className="mb-10 h-px rule-fade" />
+          <div className="mb-10 h-px rule-fade light:h-1 light:rounded-[2px] light:bg-none light:shadow-inset-sm" />
 
           <PostBody html={post.contentHtml} />
 
@@ -50,7 +50,10 @@ export default function PostView({ post }) {
         <aside className="sticky top-[calc(var(--wp-admin--admin-bar--height,0px)+96px)] flex flex-col gap-6 self-start pt-[88px] max-lg:hidden">
           <div>
             <div className="mb-2.5 text-[11px] tracking-[0.1em] text-neutral-500 uppercase">Mission progress</div>
-            <div className="text-[28px] text-accent-200">{Math.round(progress * 100)}%</div>
+            {/* Light: an 84px raised ring around a 62px pressed centre. The span is unstyled in dark. */}
+            <div className="text-[28px] text-accent-200 light:grid light:size-[84px] light:place-items-center light:rounded-full light:shadow-raised">
+              <span className="light:grid light:size-[62px] light:place-items-center light:rounded-full light:text-[17px] light:shadow-inset-sm">{Math.round(progress * 100)}%</span>
+            </div>
           </div>
           {config.showToc && post.toc.length > 0 && <Waypoints toc={post.toc} active={active ?? post.toc[0].id} />}
         </aside>
@@ -122,13 +125,13 @@ function Checkpoint({ post }) {
   const pick = quiz[post.id + ":pick"];
 
   return (
-    <Card elev="md" className="mt-12 mb-5 gap-3.5 bg-[linear-gradient(160deg,var(--color-accent-900),var(--color-surface)_60%)] p-[22px]">
+    <Card elev="none" className="mt-12 mb-5 gap-3.5 bg-[linear-gradient(160deg,var(--color-accent-900),var(--color-surface)_60%)] p-[22px] shadow-md light:mt-14 light:mb-8 light:gap-5 light:rounded-[24px] light:bg-quiz light:bg-none light:p-[30px] light:shadow-quiz">
       <div className="flex items-center justify-between">
         <Kicker>Checkpoint</Kicker>
-        <span className="text-[12px] text-accent-300">+{config.quizXp} XP bonus</span>
+        <span className="text-[12px] text-accent-300 light:rounded-full light:bg-accent-800 light:px-3.5 light:py-2 light:text-[13px] light:text-accent-200 light:shadow-inset-sm">+{config.quizXp} XP bonus</span>
       </div>
-      <div className="text-[19px] leading-[1.3]">{post.quiz.question}</div>
-      <div className="flex flex-col gap-2">
+      <div className="text-[19px] leading-[1.3] light:rounded-lg light:bg-bg light:px-5 light:py-[18px] light:text-[20px] light:leading-[1.35] light:shadow-inset">{post.quiz.question}</div>
+      <div className="flex flex-col gap-2 light:gap-3.5">
         {post.quiz.options.map((text, i) => {
           const correct = state && i === post.quiz.answer;
           const wrong = state === "wrong" && i === pick;
@@ -139,12 +142,13 @@ function Checkpoint({ post }) {
               disabled={!!state}
               onClick={() => answer(post, i)}
               className={cx(
-                "justify-start gap-2.5 px-3.5 py-2.5 text-left disabled:cursor-default disabled:opacity-100",
-                correct && "text-accent-200 shadow-[inset_0_0_0_1px_var(--color-accent),0_0_18px_color-mix(in_srgb,var(--color-accent)_25%,transparent)]",
-                wrong && "text-neutral-600 line-through"
+                "justify-start gap-2.5 px-3.5 py-2.5 text-left disabled:cursor-default disabled:opacity-100 light:gap-3 light:px-4 light:py-3 light:transition-shadow light:duration-160",
+                correct &&
+                  "text-accent-200 shadow-[inset_0_0_0_1px_var(--color-accent),0_0_18px_color-mix(in_srgb,var(--color-accent)_25%,transparent)] light:shadow-correct light:hover:shadow-correct light:active:shadow-correct light:disabled:hover:shadow-correct",
+                wrong && "text-neutral-600 line-through light:shadow-inset-sm light:hover:shadow-inset-sm light:active:shadow-inset-sm light:disabled:hover:shadow-inset-sm"
               )}
             >
-              <span className="grid size-5 flex-none place-items-center rounded-sm text-[11px] text-neutral-400 no-underline shadow-[inset_0_0_0_1px_var(--color-neutral-700)]">{"ABC"[i]}</span>
+              <span className="grid size-5 flex-none place-items-center rounded-sm text-[11px] text-neutral-400 no-underline shadow-[inset_0_0_0_1px_var(--color-neutral-700)] light:rounded-full light:shadow-inset-sm">{"ABC"[i]}</span>
               {text}
             </Button>
           );
@@ -166,8 +170,10 @@ function MissionBanner({ post }) {
   return (
     <div
       className={cx(
-        "mb-12 flex items-center gap-3 rounded-md px-[18px] py-4",
-        isDone ? "shadow-[0_0_0_1px_var(--color-accent-600),0_0_24px_color-mix(in_srgb,var(--color-accent)_15%,transparent)]" : "shadow-sm"
+        "mb-12 flex items-center gap-3 rounded-md px-[18px] py-4 light:rounded-lg light:px-5 light:py-[18px] light:transition-shadow light:duration-300",
+        isDone
+          ? "shadow-[0_0_0_1px_var(--color-accent-600),0_0_24px_color-mix(in_srgb,var(--color-accent)_15%,transparent)] light:shadow-[var(--shadow-inset),inset_0_0_0_1px_color-mix(in_srgb,var(--color-accent)_40%,transparent)]"
+          : "shadow-sm light:shadow-raised-lg"
       )}
     >
       <div className="flex-1">
@@ -192,7 +198,7 @@ function NextMission({ post, posts }) {
   if (!next || next.id === post.id) return null;
 
   return (
-    <Card as="a" href={next.url} className="cursor-pointer p-5 text-text no-underline transition-shadow duration-140 hover:text-text hover:shadow-md">
+    <Card as="a" href={next.url} className="cursor-pointer p-5 text-text no-underline transition-shadow duration-140 hover:text-text hover:shadow-md light:p-[22px] light:duration-200 light:hover:shadow-hover light:active:shadow-inset">
       <Kicker>Next mission</Kicker>
       <div className="font-heading text-[20px] leading-[1.2] font-medium">{next.title}</div>
       <div className="flex items-center gap-1.5 text-[11px] text-[color-mix(in_srgb,var(--color-text)_50%,transparent)]">
@@ -219,7 +225,7 @@ function Waypoints({ toc, active }) {
   return (
     <nav aria-label="Waypoints">
       <div className="mb-3 text-[11px] tracking-[0.1em] text-neutral-500 uppercase">Waypoints</div>
-      <div className="flex flex-col gap-0.5">
+      <div className="flex flex-col gap-0.5 light:gap-1 light:rounded-lg light:p-2 light:shadow-inset-sm">
         {toc.map((item) => {
           const on = item.id === active;
           return (
@@ -229,8 +235,10 @@ function Waypoints({ toc, active }) {
               onClick={(e) => go(e, item.id)}
               aria-current={on ? "location" : undefined}
               className={cx(
-                "py-1.5 pl-3 text-[13px] leading-[1.4] no-underline",
-                on ? "text-text shadow-[inset_2px_0_0_var(--color-accent)] hover:text-text" : "text-neutral-500 shadow-[inset_2px_0_0_var(--color-neutral-800)] hover:text-neutral-300"
+                "py-1.5 pl-3 text-[13px] leading-[1.4] no-underline light:rounded-md light:px-2.5 light:py-2 light:transition-shadow light:duration-200",
+                on
+                  ? "text-text shadow-[inset_2px_0_0_var(--color-accent)] hover:text-text light:bg-bg light:shadow-raised"
+                  : "text-neutral-500 shadow-[inset_2px_0_0_var(--color-neutral-800)] hover:text-neutral-300 light:shadow-none"
               )}
             >
               {item.text}

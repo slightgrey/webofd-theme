@@ -103,6 +103,8 @@
   --shadow-inset-sm: none;                                                  /* tracks, stat tiles */
   --shadow-hover: none;
   --shadow-header: none;
+  --shadow-correct: none;                                                   /* quiz: right answer */
+  --shadow-quiz: none;                                                      /* checkpoint card */
   --shadow-menu: 0 16px 40px rgba(0, 0, 0, 0.5);
   --shadow-toast: 0 0 0 1px var(--color-accent-600), 0 0 32px color-mix(in srgb, var(--color-accent) 30%, transparent), 0 16px 40px rgba(0, 0, 0, 0.6);
 }
@@ -113,6 +115,8 @@
 @utility shadow-inset-sm { box-shadow: var(--shadow-inset-sm); }
 @utility shadow-hover { box-shadow: var(--shadow-hover); }
 @utility shadow-header { box-shadow: var(--shadow-header); }
+@utility shadow-correct { box-shadow: var(--shadow-correct); }
+@utility shadow-quiz { box-shadow: var(--shadow-quiz); }
 
 /* `light:` / `dark:` follow the data-theme attribute (replaces Tailwind's media-query dark:). */
 @custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
@@ -166,6 +170,8 @@
   --shadow-inset-sm: inset 2px 2px 5px rgba(170, 171, 178, 0.8), inset -2px -2px 4px rgba(255, 255, 255, 0.9); /* NEU.INS */
   --shadow-hover: var(--shadow-raised-lg);
   --shadow-header: 0 10px 24px -14px rgba(170, 171, 178, 0.8);
+  --shadow-correct: var(--shadow-inset), inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 55%, transparent);
+  --shadow-quiz: 12px 12px 28px rgba(170, 171, 178, 0.85), -10px -10px 24px rgba(255, 255, 255, 0.95), inset 0 0 0 2px var(--color-accent-700);
   --shadow-menu: var(--shadow-raised-lg);
   --shadow-toast: var(--shadow-raised-lg), 0 0 28px color-mix(in srgb, var(--color-accent) 22%, transparent);
 

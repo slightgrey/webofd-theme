@@ -9,7 +9,7 @@ const twMerge = extendTailwindMerge({
   extend: {
     theme: {
       radius: ["card"],
-      shadow: ["raised", "raised-lg", "inset", "inset-sm", "hover", "header"],
+      shadow: ["raised", "raised-lg", "inset", "inset-sm", "hover", "header", "correct", "quiz"],
     },
   },
 });
