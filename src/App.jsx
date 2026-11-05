@@ -52,7 +52,7 @@ function Shell() {
   }, [location.pathname, location.search]);
 
   return (
-    <div className="min-h-screen bg-bg bg-[image:radial-gradient(1200px_500px_at_0%_-10%,color-mix(in_srgb,var(--color-accent-900)_90%,transparent),transparent_70%)] bg-no-repeat font-body text-text">
+    <div className="min-h-screen bg-bg bg-[image:radial-gradient(1200px_500px_at_0%_-10%,color-mix(in_srgb,var(--color-accent-900)_90%,transparent),transparent_70%)] bg-no-repeat font-body text-text light:bg-none">
       <SpaLinks />
       <Header onOpenTrophies={() => setTrophiesOpen(true)} onOpenSearch={() => setSearchQuery("")} />
       <View />

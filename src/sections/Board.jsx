@@ -163,7 +163,7 @@ function SkillCard({ cat, posts, done, selected, onPick }) {
       className={cx(
         "flex flex-col gap-2.5 rounded-md border-0 bg-surface p-3.5 text-left font-[inherit] leading-[inherit] text-text transition-shadow duration-140 hover:shadow-[0_0_0_1px_var(--color-accent-600)] light:gap-3 light:rounded-lg light:p-4 light:duration-200",
         selected
-          ? "shadow-[0_0_0_1px_var(--color-accent)] light:shadow-[var(--shadow-inset),inset_0_0_0_1px_color-mix(in_srgb,var(--color-accent)_45%,transparent)]"
+          ? "shadow-[0_0_0_1px_var(--color-accent)] light:shadow-[var(--shadow-inset),inset_0_0_0_1px_color-mix(in_srgb,var(--color-accent)_45%,transparent)] light:hover:shadow-[var(--shadow-inset),inset_0_0_0_1px_color-mix(in_srgb,var(--color-accent)_45%,transparent)]"
           : "shadow-sm light:shadow-raised light:hover:shadow-hover"
       )}
     >

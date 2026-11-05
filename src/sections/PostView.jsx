@@ -50,7 +50,7 @@ export default function PostView({ post }) {
         <aside className="sticky top-[calc(var(--wp-admin--admin-bar--height,0px)+96px)] flex flex-col gap-6 self-start pt-[88px] max-lg:hidden">
           <div>
             <div className="mb-2.5 text-[11px] tracking-[0.1em] text-neutral-500 uppercase">Mission progress</div>
-            {/* Light: an 84px raised ring around a 62px pressed centre. The span is unstyled in dark. */}
+            {/* Light: an 84px raised disc around a 62px pressed centre. The span is unstyled in dark. */}
             <div className="text-[28px] text-accent-200 light:grid light:size-[84px] light:place-items-center light:rounded-full light:shadow-raised">
               <span className="light:grid light:size-[62px] light:place-items-center light:rounded-full light:text-[17px] light:shadow-inset-sm">{Math.round(progress * 100)}%</span>
             </div>

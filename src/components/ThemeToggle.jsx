@@ -4,7 +4,7 @@ import { Button } from "./ui.jsx";
 
 /*
  * Light/dark toggle, rendered in Header.jsx between search and the XP chip.
- * The initial theme is set before paint by the inline script in header.php,
+ * The initial theme is set before paint by the script in header.php,
  * so reading data-theme here is safe.
  */
 export const THEME_KEY = "wod-theme";
