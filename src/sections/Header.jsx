@@ -7,10 +7,10 @@ import { useGame } from "../lib/game.jsx";
 import { Button } from "../components/ui.jsx";
 import { ThemeToggle } from "../components/ThemeToggle.jsx";
 
-const navLink = "text-[14px] text-inherit no-underline hover:text-accent";
+const navLink = "text-[14px] text-inherit no-underline hover:text-accent light:hover:text-accent-300";
 // Rows in the mobile menu panel.
 const menuLink =
-  "flex w-full items-center justify-between gap-3 border-0 bg-transparent px-1 py-3 text-left font-[inherit] text-[15px] leading-[inherit] text-text no-underline row-rule hover:text-accent";
+  "flex w-full items-center justify-between gap-3 border-0 bg-transparent px-1 py-3 text-left font-[inherit] text-[15px] leading-[inherit] text-text no-underline row-rule hover:text-accent light:hover:text-accent-300";
 
 // The search shortcut is Cmd+K on Apple devices and Ctrl+K everywhere else.
 const isApple = /Mac|iPhone|iPad|iPod/.test(navigator.userAgentData?.platform ?? navigator.platform ?? "");
@@ -44,10 +44,10 @@ export default function Header({ onOpenTrophies, onOpenSearch }) {
   };
 
   return (
-    <header ref={header} className="sticky top-[var(--wp-admin--admin-bar--height,0px)] z-20 bg-[color-mix(in_srgb,var(--color-bg)_78%,transparent)] backdrop-blur-[12px]">
+    <header ref={header} className="sticky top-[var(--wp-admin--admin-bar--height,0px)] z-20 bg-header backdrop-blur-[12px] light:shadow-header">
       <nav className="mx-auto flex max-w-[1320px] items-center gap-5 px-6 py-3 text-text max-sm:gap-3 max-sm:px-4">
-        <a href={site.homeUrl} className="mr-auto flex items-center gap-2.5 font-heading text-[14px] font-medium text-text no-underline hover:text-accent">
-          <span className="grid size-7 place-items-center rounded-md text-[12px] text-accent shadow-[inset_0_0_0_1px_var(--color-accent)]">{site.mark}</span>
+        <a href={site.homeUrl} className="mr-auto flex items-center gap-2.5 font-heading text-[14px] font-medium text-text no-underline hover:text-accent light:hover:text-accent-300">
+          <span className="grid size-7 place-items-center rounded-md text-[12px] text-accent shadow-[inset_0_0_0_1px_var(--color-accent)] light:text-accent-300 light:shadow-raised">{site.mark}</span>
           <span>{site.name}</span>
         </a>
         <a href={site.homeUrl} className={`${navLink} max-md:hidden`}>
@@ -62,16 +62,16 @@ export default function Header({ onOpenTrophies, onOpenSearch }) {
           </a>
         ))}
         {hire && (
-          <a href={site.hireUrl} target="_blank" rel="noopener" className={`${navLink} inline-flex items-center gap-[5px] max-md:hidden`}>
+          <a href={site.hireUrl} target="_blank" rel="noopener" className={`${navLink} inline-flex items-center gap-[5px] max-md:hidden light:rounded-md light:bg-accent-800 light:px-3.5 light:py-[7px] light:text-[13px] light:text-accent-200 light:shadow-raised light:hover:shadow-hover`}>
             {site.hireLabel}
             <ArrowUpRight size={11} />
           </a>
         )}
-        <Button variant="secondary" onClick={onOpenSearch} className="gap-2 text-neutral-400" aria-label="Search missions" title={`Search missions (${isApple ? "⌘" : "Ctrl+"}K)`}>
+        <Button variant="secondary" onClick={onOpenSearch} className="gap-2 text-neutral-400 light:rounded-lg" aria-label="Search missions" title={`Search missions (${isApple ? "⌘" : "Ctrl+"}K)`}>
           <MagnifyingGlass size={14} />
           <span className="text-[11px] max-sm:hidden">{shortcut}</span>
         </Button>
-        <ThemeToggle />
+        <ThemeToggle className="light:rounded-lg" />
         <XpChip onClick={onOpenTrophies} />
         <Button
           variant="secondary"
@@ -79,18 +79,18 @@ export default function Header({ onOpenTrophies, onOpenSearch }) {
           aria-expanded={menuOpen}
           aria-controls="wod-mobile-menu"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="size-[34px] p-0 text-neutral-300 md:hidden"
+          className="size-[34px] p-0 text-neutral-300 md:hidden light:rounded-lg"
         >
           {menuOpen ? <X size={16} /> : <List size={16} />}
         </Button>
       </nav>
-      <div className="h-px rule-fade" />
+      <div className="h-px rule-fade light:hidden" />
 
       {menuOpen && (
         <nav
           id="wod-mobile-menu"
           aria-label="Menu"
-          className="absolute inset-x-0 top-full bg-bg px-4 pt-1 pb-4 shadow-[0_16px_40px_rgba(0,0,0,0.5)] md:hidden"
+          className="absolute inset-x-0 top-full bg-bg px-4 pt-1 pb-4 shadow-[var(--shadow-menu)] md:hidden"
         >
           <a href={site.homeUrl} className={menuLink}>
             Missions
@@ -124,9 +124,9 @@ function XpChip({ onClick }) {
       type="button"
       onClick={onClick}
       aria-label={`Level ${level}, ${rank}. Open trophy case`}
-      className="flex items-center gap-2.5 rounded-md border-0 bg-transparent py-[5px] pr-3 pl-[5px] font-[inherit] text-text shadow-sm hover:shadow-[0_0_0_1px_var(--color-accent-700)]"
+      className="flex items-center gap-2.5 rounded-md border-0 bg-transparent py-[5px] pr-3 pl-[5px] font-[inherit] text-text shadow-sm hover:shadow-[0_0_0_1px_var(--color-accent-700)] light:rounded-lg light:transition-shadow light:duration-160 light:py-1.5 light:pr-3.5 light:pl-1.5 light:shadow-raised light:hover:shadow-hover light:active:shadow-inset"
     >
-      <span className="grid size-[30px] place-items-center rounded-sm bg-accent-900 text-[13px] text-accent-200 shadow-[inset_0_0_0_1px_var(--color-accent-700)]">{level}</span>
+      <span className="grid size-[30px] place-items-center rounded-sm bg-accent-900 text-[13px] text-accent-200 shadow-[inset_0_0_0_1px_var(--color-accent-700)] light:rounded-md light:bg-bg light:shadow-inset-sm">{level}</span>
       <span className="flex w-[110px] flex-col gap-1 max-sm:hidden">
         <span className="flex justify-between text-[10px] leading-[1.55] text-neutral-400">
           <span>{rank}</span>
@@ -134,8 +134,8 @@ function XpChip({ onClick }) {
             {xpInLevel}/{config.xpPerLevel}
           </span>
         </span>
-        <span className="block h-1 overflow-hidden rounded-[2px] bg-neutral-800">
-          <span className="block h-1 bg-accent shadow-[0_0_8px_var(--color-accent)] transition-[width] duration-600 ease-fill" style={{ width: pct + "%" }} />
+        <span className="block h-1 overflow-hidden rounded-[2px] bg-neutral-800 light:h-1.5 light:rounded-[3px] light:bg-bg light:p-px light:shadow-inset-sm">
+          <span className="block h-1 bg-accent light:rounded-[2px] shadow-[0_0_8px_var(--color-accent)] transition-[width] duration-600 ease-fill" style={{ width: pct + "%" }} />
         </span>
       </span>
     </button>
