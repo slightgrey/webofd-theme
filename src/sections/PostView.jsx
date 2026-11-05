@@ -31,7 +31,7 @@ export default function PostView({ post }) {
             <Tag variant="neutral">{post.diff}</Tag>
             <Tag variant="outline">+{post.xp} XP</Tag>
             <span className="text-[12px] text-neutral-500">
-              {post.date} · {post.readMinutes} min read
+              {post.readMinutes} min read
             </span>
           </div>
           <h1 className="m-0 mb-[18px] text-[44px] leading-[1.08] tracking-[-0.025em] text-wrap-balance max-sm:text-[32px]">{post.title}</h1>

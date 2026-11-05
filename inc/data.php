@@ -52,7 +52,6 @@ function wod_post_summary( $post ) {
 		'url'         => get_permalink( $post ),
 		'title'       => wod_plain_text( get_the_title( $post ) ),
 		'excerpt'     => wod_plain_text( get_the_excerpt( $post ) ),
-		'date'        => get_the_date( 'M j, Y', $post ),
 		'categories'  => wod_post_category_ids( $post->ID ),
 		'readMinutes' => wod_read_minutes( $post ),
 		'image'       => $image ? $image[0] : null,
@@ -68,7 +67,7 @@ function wod_post_summary( $post ) {
  * @return array[]
  */
 function wod_get_post_summaries() {
-	$cached = get_transient( 'wod_posts' );
+	$cached = get_transient( 'wod_posts_v2' );
 	if ( is_array( $cached ) ) {
 		return $cached;
 	}
@@ -86,7 +85,7 @@ function wod_get_post_summaries() {
 
 	$summaries = array_map( 'wod_post_summary', $posts );
 
-	set_transient( 'wod_posts', $summaries, DAY_IN_SECONDS );
+	set_transient( 'wod_posts_v2', $summaries, DAY_IN_SECONDS );
 	return $summaries;
 }
 
@@ -94,7 +93,7 @@ function wod_get_post_summaries() {
  * Drop the summary cache.
  */
 function wod_flush_post_summaries() {
-	delete_transient( 'wod_posts' );
+	delete_transient( 'wod_posts_v2' );
 }
 foreach ( array( 'save_post', 'wp_after_insert_post', 'deleted_post', 'edited_category', 'delete_category', 'switch_theme' ) as $wod_hook ) {
 	add_action( $wod_hook, 'wod_flush_post_summaries' );

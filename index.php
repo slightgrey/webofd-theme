@@ -31,7 +31,6 @@ get_header();
 					<?php the_post(); ?>
 					<li class="mb-6">
 						<h2 class="text-[19px]"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-						<p class="text-neutral-400"><?php echo esc_html( get_the_date( 'M j, Y' ) ); ?></p>
 					</li>
 				<?php endwhile; ?>
 			</ul>

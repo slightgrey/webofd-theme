@@ -210,7 +210,7 @@ function MissionRow({ post }) {
           <span className="text-[10px] tracking-[0.1em] text-accent uppercase light:text-accent-300">{post.topic}</span>
           <Tag size="sm">{post.diff}</Tag>
           <span className="text-[11px] text-neutral-600">
-            {post.readMinutes} min · {post.date}
+            {post.readMinutes} min
           </span>
         </div>
         <h3 className="m-0 mb-1.5 text-[19px] text-wrap-balance">{post.title}</h3>
