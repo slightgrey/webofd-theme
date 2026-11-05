@@ -71,6 +71,125 @@
   --ease-fill: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/*
+ * Light theme (v3 Neumorphic, docs/light-theme). Dark Nocturne stays the default;
+ * light overrides it when <html data-theme="light">, set before paint in header.php.
+ *
+ * Semantic colour/radius tokens live in @theme so they become utilities (bg-card,
+ * rounded-card …). Tailwind compiles these to var() references, so the light block can
+ * override them at runtime. Dark values equal the current Nocturne look.
+ */
+@theme {
+  --color-card: var(--color-surface);
+  --color-code: var(--color-neutral-900);
+  --color-btn-primary: transparent;
+  --color-btn-primary-fg: var(--color-accent);
+  --color-btn-primary-bd: var(--color-accent);
+  --color-quiz: var(--color-accent-900);
+  --color-header: color-mix(in srgb, var(--color-bg) 78%, transparent);
+
+  --radius-card: 8px;
+}
+
+/*
+ * Semantic shadows are plain variables plus hand-written utilities, NOT @theme tokens:
+ * Tailwind inlines @theme shadow values into shadow-* utilities, which would make the
+ * light overrides below ineffective.
+ */
+:root {
+  --shadow-raised: none;                                                    /* cards, rows, chips */
+  --shadow-raised-lg: 0 0 0 1px #595d6c, 0 6px 18px rgba(0, 0, 0, 0.55);    /* hero card, dialogs */
+  --shadow-inset: inset 0 0 0 1px var(--color-divider);                     /* inputs, code, selected */
+  --shadow-inset-sm: none;                                                  /* tracks, stat tiles */
+  --shadow-hover: none;
+  --shadow-header: none;
+  --shadow-menu: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-toast: 0 0 0 1px var(--color-accent-600), 0 0 32px color-mix(in srgb, var(--color-accent) 30%, transparent), 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+@utility shadow-raised { box-shadow: var(--shadow-raised); }
+@utility shadow-raised-lg { box-shadow: var(--shadow-raised-lg); }
+@utility shadow-inset { box-shadow: var(--shadow-inset); }
+@utility shadow-inset-sm { box-shadow: var(--shadow-inset-sm); }
+@utility shadow-hover { box-shadow: var(--shadow-hover); }
+@utility shadow-header { box-shadow: var(--shadow-header); }
+
+/* `light:` / `dark:` follow the data-theme attribute (replaces Tailwind's media-query dark:). */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --color-bg: #e9e9eb;
+  --color-surface: #e9e9eb; /* neumorphism: surface == ground */
+  --color-text: #1f2126;
+  --color-accent: #6fa6d6; /* fills and glows only, never body text (2.1:1) */
+  --color-accent-2: #6fa6d6;
+  --color-divider: rgba(120, 122, 130, 0.22);
+
+  /* ramp is inverted: 100 = darkest ink, 900 = palest */
+  --color-neutral-100: #18191c;
+  --color-neutral-200: #26282d;
+  --color-neutral-300: #3a3d44;
+  --color-neutral-400: #4f535b;
+  --color-neutral-500: #5b5f68;
+  --color-neutral-600: #5f636c;
+  --color-neutral-700: #b9bbc1;
+  --color-neutral-800: #d2d3d7;
+  --color-neutral-900: #dedfe2;
+
+  --color-accent-100: #12304d;
+  --color-accent-200: #1d4468;
+  --color-accent-300: #2a5a86; /* accent text, 6:1 */
+  --color-accent-400: #3d75a8;
+  --color-accent-500: #6fa6d6;
+  --color-accent-600: #9cc4e8;
+  --color-accent-700: #bcd8f0;
+  --color-accent-800: #cfe4f6;
+  --color-accent-900: #e0edf8;
+
+  --color-accent-2-100: #12304d;
+  --color-accent-2-200: #1d4468;
+  --color-accent-2-300: #2a5a86;
+  --color-accent-2-400: #3d75a8;
+  --color-accent-2-500: #6fa6d6;
+  --color-accent-2-600: #9cc4e8;
+  --color-accent-2-700: #bcd8f0;
+  --color-accent-2-800: #cfe4f6;
+  --color-accent-2-900: #e0edf8;
+
+  /* The prototype's NEU object */
+  --shadow-raised: 5px 5px 12px rgba(170, 171, 178, 0.65), -4px -4px 10px rgba(255, 255, 255, 0.9);           /* NEU.UPS */
+  --shadow-raised-lg: 9px 9px 20px rgba(170, 171, 178, 0.8), -7px -7px 18px rgba(255, 255, 255, 0.9);         /* NEU.UP  */
+  --shadow-inset: inset 5px 5px 12px rgba(170, 171, 178, 0.8), inset -4px -4px 10px rgba(255, 255, 255, 0.9);  /* NEU.IN  */
+  --shadow-inset-sm: inset 2px 2px 5px rgba(170, 171, 178, 0.8), inset -2px -2px 4px rgba(255, 255, 255, 0.9); /* NEU.INS */
+  --shadow-hover: var(--shadow-raised-lg);
+  --shadow-header: 0 10px 24px -14px rgba(170, 171, 178, 0.8);
+  --shadow-menu: var(--shadow-raised-lg);
+  --shadow-toast: var(--shadow-raised-lg), 0 0 28px color-mix(in srgb, var(--color-accent) 22%, transparent);
+
+  --color-card: var(--color-bg);
+  --color-code: var(--color-bg);
+  --color-btn-primary: var(--color-accent-800);
+  --color-btn-primary-fg: var(--color-accent-200);
+  --color-btn-primary-bd: transparent;
+  --color-quiz: var(--color-accent-900);
+  --color-header: color-mix(in srgb, var(--color-bg) 88%, transparent);
+
+  --radius-card: 14px;
+}
+
+[data-theme="dark"] { color-scheme: dark; }
+
+/* Smooth swap, only while toggling (class added by ThemeToggle). */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transition,
+  html.theme-transition * {
+    transition: background-color 250ms ease, color 250ms ease, box-shadow 250ms ease, border-color 250ms ease !important;
+  }
+}
+
 /* Nocturne base rules. Headings are Inter 500, never bolder. */
 @layer base {
   body {
@@ -103,6 +222,12 @@
   ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
   button { cursor: pointer; }
   button:disabled { cursor: not-allowed; }
+
+  /* Light: #6fa6d6 is only 2.1:1 on #e9e9eb, so links and focus rings use the darker steps. */
+  [data-theme="light"] a { color: var(--color-accent-300); }
+  [data-theme="light"] a:hover { color: var(--color-accent-100); }
+  [data-theme="light"] :focus-visible { outline-color: var(--color-accent-400); }
+  [data-theme="light"] ::selection { background: #cfe4f6; }
 }
 
 /* The v3 badge would sit on the back-to-top button; the comment form shows Google's attribution text instead. */
@@ -185,4 +310,10 @@
   & table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 0 0 16px; }
   & th,
   & td { text-align: left; padding: 6px; @apply row-rule; }
+}
+
+/* Light: inline code sits in a pressed well instead of a tinted chip. */
+[data-theme="light"] .prose-wod :not(pre) > code {
+  background: var(--color-bg);
+  box-shadow: var(--shadow-inset-sm);
 }
