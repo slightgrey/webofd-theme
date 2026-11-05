@@ -7,7 +7,7 @@ export default function TrophyModal({ onClose }) {
   const { ach, achCount, trophies, reset } = useGame();
 
   return (
-    <Dialog onClose={onClose} label="Trophy case" className="w-[min(600px,100%)] gap-4">
+    <Dialog onClose={onClose} label="Trophy case" className="w-[min(600px,100%)] gap-4 light:gap-[18px] light:p-[26px]">
       <div className="flex items-baseline justify-between">
         <div className="font-heading text-[20px] font-medium">Trophy case</div>
         <span className="text-[12px] text-neutral-500">
@@ -22,7 +22,9 @@ export default function TrophyModal({ onClose }) {
               key={t.id}
               className={cx(
                 "flex flex-col gap-2 rounded-md bg-bg p-3.5",
-                on ? "shadow-[0_0_0_1px_var(--color-accent-700),0_0_20px_color-mix(in_srgb,var(--color-accent)_14%,transparent)]" : "opacity-55 shadow-sm"
+                on
+                  ? "shadow-[0_0_0_1px_var(--color-accent-700),0_0_20px_color-mix(in_srgb,var(--color-accent)_14%,transparent)] light:shadow-[var(--shadow-raised),0_0_18px_color-mix(in_srgb,var(--color-accent)_16%,transparent)]"
+                  : "opacity-55 shadow-sm light:shadow-inset-sm"
               )}
             >
               <span className={on ? "text-accent" : "text-neutral-600"}>{on ? <Trophy size={22} aria-label="Unlocked" /> : <Lock size={22} aria-label="Locked" />}</span>
@@ -35,7 +37,7 @@ export default function TrophyModal({ onClose }) {
       <div className="mt-[5.6px] flex justify-between gap-[5.6px]">
         <Button
           variant="ghost"
-          className="text-neutral-500"
+          className="text-neutral-500 light:text-neutral-500"
           onClick={() => {
             reset();
             onClose();

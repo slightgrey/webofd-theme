@@ -22,8 +22,8 @@ export default function Toast() {
       )}
     >
       {shown && (
-        <div className="flex items-center gap-3 rounded-lg bg-surface py-3 pr-4 pl-3 shadow-[0_0_0_1px_var(--color-accent-600),0_0_32px_color-mix(in_srgb,var(--color-accent)_30%,transparent),0_16px_40px_rgba(0,0,0,0.6)]">
-          <span className="grid size-9 place-items-center rounded-md bg-accent-900 text-accent-300">
+        <div className="flex items-center gap-3 rounded-lg bg-surface py-3 pr-4 pl-3 shadow-[var(--shadow-toast)]">
+          <span className="grid size-9 place-items-center rounded-md bg-accent-900 text-accent-300 light:rounded-full light:bg-bg light:shadow-inset-sm">
             <Trophy size={18} />
           </span>
           <div>

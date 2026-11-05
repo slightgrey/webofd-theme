@@ -1,6 +1,6 @@
 import { useData } from "../lib/data.js";
 
-const link = "text-neutral-400 no-underline hover:text-accent";
+const link = "text-neutral-400 no-underline hover:text-accent light:hover:text-accent-300";
 
 export default function Footer() {
   const { site } = useData();

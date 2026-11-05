@@ -23,7 +23,7 @@ export default function PageView({ post, notFound = !post, error = false }) {
         ) : (
           <>
             <FeaturedImage image={post.featured} />
-            <div className="mb-10 h-px rule-fade" />
+            <div className="mb-10 h-px rule-fade light:h-1 light:rounded-[2px] light:bg-none light:shadow-inset-sm" />
             <div className="prose-wod">{parse(post.contentHtml ?? "")}</div>
           </>
         )}
