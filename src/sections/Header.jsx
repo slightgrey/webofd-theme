@@ -5,6 +5,7 @@ import { config } from "../lib/config.js";
 import { useData } from "../lib/data.js";
 import { useGame } from "../lib/game.jsx";
 import { Button } from "../components/ui.jsx";
+import { ThemeToggle } from "../components/ThemeToggle.jsx";
 
 const navLink = "text-[14px] text-inherit no-underline hover:text-accent";
 // Rows in the mobile menu panel.
@@ -70,6 +71,7 @@ export default function Header({ onOpenTrophies, onOpenSearch }) {
           <MagnifyingGlass size={14} />
           <span className="text-[11px] max-sm:hidden">{shortcut}</span>
         </Button>
+        <ThemeToggle />
         <XpChip onClick={onOpenTrophies} />
         <Button
           variant="secondary"
