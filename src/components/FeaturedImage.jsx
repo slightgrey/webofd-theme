@@ -3,7 +3,7 @@ export default function FeaturedImage({ image }) {
   if (!image) return null;
 
   return (
-    <figure className="m-0 mb-10 overflow-hidden rounded-md bg-surface shadow-sm">
+    <figure className="m-0 mb-10 overflow-hidden rounded-md bg-surface shadow-sm light:shadow-inset">
       <img
         src={image.src}
         srcSet={image.srcset || undefined}

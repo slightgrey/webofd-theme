@@ -18,7 +18,7 @@ export default function CodeBlock({ lang, code }) {
   };
 
   return (
-    <div className="mt-2 mb-4 overflow-hidden rounded-md bg-neutral-900 shadow-sm">
+    <div className="mt-2 mb-4 overflow-hidden rounded-md bg-code shadow-sm light:rounded-card light:shadow-inset">
       <div className="flex items-center justify-between px-3.5 py-2 text-[11px] tracking-[0.06em] text-neutral-500 uppercase">
         <span>{lang}</span>
         <Button variant="ghost" onClick={copy} className="px-2 py-0.5 text-[12px] tracking-normal normal-case">

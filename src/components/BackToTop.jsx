@@ -23,7 +23,7 @@ export default function BackToTop() {
       aria-hidden={!visible}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       className={cx(
-        "fixed right-6 bottom-6 z-40 size-10 bg-[color-mix(in_srgb,var(--color-bg)_78%,transparent)] p-0 shadow-[0_0_24px_color-mix(in_srgb,var(--color-accent)_20%,transparent)] backdrop-blur-[12px] transition-[opacity,transform] duration-[220ms,320ms] ease-pop max-sm:right-4 max-sm:bottom-4",
+        "fixed right-6 bottom-6 z-40 size-10 bg-[color-mix(in_srgb,var(--color-bg)_78%,transparent)] p-0 shadow-[0_0_24px_color-mix(in_srgb,var(--color-accent)_20%,transparent)] backdrop-blur-[12px] light:bg-bg light:hover:bg-bg light:active:bg-bg transition-[opacity,transform] duration-[220ms,320ms] ease-pop max-sm:right-4 max-sm:bottom-4",
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       )}
     >
