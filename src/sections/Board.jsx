@@ -33,16 +33,21 @@ export default function Board({ categoryId = null }) {
         <div className="min-w-0 flex-[1_1_640px]">
           <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
             <h6 className="m-0 text-neutral-500">{topic ? topicName + " missions" : "Mission board"}</h6>
-            <div className="flex gap-1.5">
+            <div className="flex gap-1.5 light:rounded-lg light:p-[5px] light:shadow-inset-sm">
               {FILTERS.map(([key, label]) => (
-                <Button key={key} variant={filter === key ? "primary" : "secondary"} onClick={() => setFilter(key)} className="px-2.5 py-[5px] text-[12px]">
+                <Button
+                  key={key}
+                  variant={filter === key ? "primary" : "secondary"}
+                  onClick={() => setFilter(key)}
+                  className={cx("px-2.5 py-[5px] text-[12px] light:border-0 light:px-3.5 light:py-1.5", filter !== key && "light:text-neutral-400 light:shadow-none light:hover:text-text light:hover:shadow-none light:active:shadow-none")}
+                >
                   {label}
                 </Button>
               ))}
             </div>
           </div>
           {list.length === 0 && <div className="py-10 text-neutral-500">No missions match this filter.</div>}
-          <div className="flex flex-col">
+          <div className="flex flex-col light:mt-3.5 light:gap-5">
             {list.map((p) => (
               <MissionRow key={p.id} post={p} />
             ))}
@@ -68,17 +73,17 @@ function Hero() {
   return (
     <section className="mb-14 grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-end gap-12 max-lg:grid-cols-1 max-lg:gap-8">
       <div>
-        <div className="mb-3.5 text-[11px] tracking-[0.12em] text-accent uppercase">{site.eyebrow}</div>
+        <div className="mb-3.5 text-[11px] tracking-[0.12em] text-accent uppercase light:text-accent-300">{site.eyebrow}</div>
         <h1 className="m-0 mb-4 text-[50px] leading-[1.05] tracking-[-0.025em] text-wrap-balance max-sm:text-[36px]">{site.heading}</h1>
         <p className="m-0 max-w-[540px] text-[16px] leading-[1.6] text-neutral-400 text-wrap-pretty">{site.intro}</p>
       </div>
-      <Card className="gap-3.5 p-5">
+      <Card elev="none" className="gap-3.5 p-5 shadow-sm light:gap-4 light:p-6 light:shadow-raised-lg">
         <div className="flex items-center justify-between">
           <Kicker>Your run</Kicker>
           <span className="text-[12px] text-neutral-500">{xp} XP total</span>
         </div>
         <div className="flex items-center gap-3.5">
-          <span className="grid size-[52px] place-items-center rounded-md bg-accent-900 text-[22px] text-accent-200 shadow-[inset_0_0_0_1px_var(--color-accent),0_0_24px_color-mix(in_srgb,var(--color-accent)_25%,transparent)]">
+          <span className="grid size-[52px] place-items-center rounded-md bg-accent-900 text-[22px] text-accent-200 shadow-[inset_0_0_0_1px_var(--color-accent),0_0_24px_color-mix(in_srgb,var(--color-accent)_25%,transparent)] light:rounded-full light:bg-bg light:shadow-[var(--shadow-raised),inset_0_0_0_1px_var(--color-accent-700)]">
             {level}
           </span>
           <div className="flex-1">
@@ -90,7 +95,7 @@ function Hero() {
         </div>
         <div className="grid grid-cols-3 gap-2">
           {stats.map(([value, suffix, label]) => (
-            <div key={label} className="rounded-md bg-bg p-2.5">
+            <div key={label} className="rounded-md bg-bg p-2.5 light:p-3 light:shadow-inset-sm">
               <div className="text-[20px]">
                 {value}
                 {suffix && <span className="text-[12px] text-neutral-500">{suffix}</span>}
@@ -114,9 +119,9 @@ function SkillTree({ topic, onPick }) {
   const selectedIndex = categories.findIndex((c) => c.id === topic);
   const shown = showAll ? categories : categories.slice(0, limit).concat(selectedIndex >= limit ? [categories[selectedIndex]] : []);
 
-  // At most `skillsShown` cards per row, never narrower than 160px.
-  const gap = 10;
-  const columns = `repeat(auto-fill, minmax(max(160px, calc((100% - ${(limit - 1) * gap}px) / ${limit})), 1fr))`;
+  // At most `skillsShown` cards per row, never narrower than 160px. The gap is a CSS
+  // variable because light mode spaces the raised cards further apart (18px vs 10px).
+  const columns = `repeat(auto-fill, minmax(max(160px, calc((100% - ${limit - 1} * var(--gap)) / ${limit})), 1fr))`;
 
   return (
     <section className="mb-14">
@@ -136,7 +141,7 @@ function SkillTree({ topic, onPick }) {
           )}
         </div>
       </div>
-      <div className="grid gap-2.5" style={{ gridTemplateColumns: columns }}>
+      <div className="grid gap-(--gap) [--gap:10px] light:[--gap:18px]" style={{ gridTemplateColumns: columns }}>
         {shown.map((cat) => (
           <SkillCard key={cat.id} cat={cat} posts={posts} done={done} selected={topic === cat.id} onPick={() => onPick(topic === cat.id ? null : cat.id)} />
         ))}
@@ -156,17 +161,19 @@ function SkillCard({ cat, posts, done, selected, onPick }) {
       onClick={onPick}
       aria-pressed={selected}
       className={cx(
-        "flex flex-col gap-2.5 rounded-md border-0 bg-surface p-3.5 text-left font-[inherit] leading-[inherit] text-text transition-shadow duration-140 hover:shadow-[0_0_0_1px_var(--color-accent-600)]",
-        selected ? "shadow-[0_0_0_1px_var(--color-accent)]" : "shadow-sm"
+        "flex flex-col gap-2.5 rounded-md border-0 bg-surface p-3.5 text-left font-[inherit] leading-[inherit] text-text transition-shadow duration-140 hover:shadow-[0_0_0_1px_var(--color-accent-600)] light:gap-3 light:rounded-lg light:p-4 light:duration-200",
+        selected
+          ? "shadow-[0_0_0_1px_var(--color-accent)] light:shadow-[var(--shadow-inset),inset_0_0_0_1px_color-mix(in_srgb,var(--color-accent)_45%,transparent)]"
+          : "shadow-sm light:shadow-raised light:hover:shadow-hover"
       )}
     >
       <div className="flex w-full items-center justify-between">
         <span className="text-[14px]">{cat.name}</span>
         <span className={cx("text-[11px]", mastered ? "text-accent-300" : "text-neutral-500")}>{mastered ? "Mastered" : cleared + "/" + all.length}</span>
       </div>
-      <div className="flex w-full gap-[3px]">
+      <div className="flex w-full gap-[3px] light:rounded-[4px] light:p-[3px] light:shadow-inset-sm">
         {all.map((p, i) => (
-          <span key={p.id} className={cx("h-1 flex-1 rounded-[2px]", i < cleared ? "bg-accent shadow-[0_0_6px_var(--color-accent)]" : "bg-neutral-800")} />
+          <span key={p.id} className={cx("h-1 flex-1 rounded-[2px]", i < cleared ? "bg-accent shadow-[0_0_6px_var(--color-accent)]" : "bg-neutral-800 light:bg-transparent")} />
         ))}
       </div>
     </button>
@@ -186,12 +193,12 @@ function MissionRow({ post }) {
   return (
     <a
       href={post.url}
-      className="-mx-3 grid grid-cols-[28px_168px_minmax(0,1fr)_auto] items-start gap-[18px] rounded-md px-3 py-[18px] text-text no-underline row-rule transition-[background-color] duration-140 hover:bg-[color-mix(in_srgb,var(--color-accent)_6%,transparent)] hover:text-text max-sm:grid-cols-[22px_minmax(0,1fr)] max-sm:gap-3"
+      className="-mx-3 grid grid-cols-[28px_168px_minmax(0,1fr)_auto] items-start gap-[18px] rounded-md px-3 py-[18px] text-text no-underline row-rule transition-[background-color] duration-140 hover:bg-[color-mix(in_srgb,var(--color-accent)_6%,transparent)] hover:text-text max-sm:grid-cols-[22px_minmax(0,1fr)] max-sm:gap-3 light:mx-0 light:rounded-card light:bg-card light:bg-none light:py-4 light:pr-[18px] light:pl-3.5 light:shadow-raised light:transition-shadow light:duration-200 light:hover:bg-card light:hover:shadow-hover light:active:shadow-inset"
     >
       <div className={cx("flex h-[105px] items-center justify-center self-stretch max-sm:h-auto max-sm:items-start max-sm:pt-0.5", cleared ? "text-accent" : "text-neutral-700")}>
         {cleared ? <CheckCircle size={22} weight="fill" aria-label="Cleared" /> : <Circle size={22} aria-label="Open" />}
       </div>
-      <div className="relative h-[105px] w-[168px] overflow-hidden rounded-md bg-surface shadow-sm mix-blend-lighten max-sm:hidden">
+      <div className="relative h-[105px] w-[168px] overflow-hidden rounded-md bg-surface shadow-sm mix-blend-lighten max-sm:hidden light:bg-bg light:shadow-inset light:mix-blend-normal">
         {post.image ? (
           <img src={post.image} alt="" width={168} height={105} loading="lazy" decoding="async" className="size-full rounded-md object-cover" />
         ) : (
@@ -200,7 +207,7 @@ function MissionRow({ post }) {
       </div>
       <div>
         <div className="mb-1.5 flex flex-wrap items-center gap-2.5">
-          <span className="text-[10px] tracking-[0.1em] text-accent uppercase">{post.topic}</span>
+          <span className="text-[10px] tracking-[0.1em] text-accent uppercase light:text-accent-300">{post.topic}</span>
           <Tag size="sm">{post.diff}</Tag>
           <span className="text-[11px] text-neutral-600">
             {post.readMinutes} min · {post.date}
@@ -240,20 +247,20 @@ function Quests() {
   }, [posts, done, quiz]);
 
   return (
-    <aside className="sticky top-[calc(var(--wp-admin--admin-bar--height,0px)+88px)] flex max-w-[320px] flex-[1_0_280px] flex-col gap-3 max-md:static max-md:max-w-none">
+    <aside className="sticky top-[calc(var(--wp-admin--admin-bar--height,0px)+88px)] flex max-w-[320px] flex-[1_0_280px] flex-col gap-3 light:gap-[18px] max-md:static max-md:max-w-none">
       <h6 className="m-0 mb-0.5 text-neutral-500">Quests</h6>
       {quests.map(([name, desc, n, max, reward]) => {
         const complete = n >= max;
         return (
-          <Card key={name} className="gap-2 p-3.5">
+          <Card key={name} className="gap-2 p-3.5 light:gap-2.5 light:p-4">
             <div className="flex items-baseline justify-between gap-2">
               <span className="text-[14px]">{name}</span>
               <span className={cx("text-[11px]", complete ? "text-accent-300" : "text-neutral-500")}>{complete ? "Complete" : reward}</span>
             </div>
             <div className="text-[12px] text-neutral-500">{desc}</div>
             <div className="flex items-center gap-2">
-              <div className="h-1 flex-1 overflow-hidden rounded-[2px] bg-neutral-800">
-                <div className="h-1 bg-accent transition-[width] duration-600" style={{ width: Math.min(100, (n / max) * 100) + "%" }} />
+              <div className="h-1 flex-1 overflow-hidden rounded-[2px] bg-neutral-800 light:h-2 light:rounded-[4px] light:bg-bg light:p-0.5 light:shadow-inset-sm">
+                <div className="h-1 bg-accent transition-[width] duration-600 light:rounded-[2px] light:shadow-[0_0_6px_var(--color-accent)]" style={{ width: Math.min(100, (n / max) * 100) + "%" }} />
               </div>
               <span className="text-[11px] text-neutral-400">
                 {Math.min(n, max)}/{max}
