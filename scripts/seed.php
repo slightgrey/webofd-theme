@@ -399,5 +399,5 @@ foreach ( $wod_posts as $wod_index => $wod_post ) {
 	WP_CLI::success( "Created {$wod_post['slug']} ({$wod_post['read']} min)." );
 }
 
-delete_transient( 'wod_posts' );
+delete_transient( 'wod_posts_v2' );
 WP_CLI::success( 'Seed complete.' );
