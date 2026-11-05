@@ -11,7 +11,7 @@ import { cx } from "../lib/cx.js";
 const AVATARS = ["bg-accent-800", "bg-neutral-800", "bg-accent-2-800", "bg-neutral-700"];
 
 const input =
-  "min-h-9 w-full rounded-md border border-divider bg-surface px-2.5 py-1.5 font-[inherit] text-[14px] text-text caret-accent hover:border-[color-mix(in_srgb,var(--color-text)_45%,transparent)] focus-visible:border-accent focus-visible:outline-offset-0 placeholder:text-neutral-600";
+  "min-h-9 w-full rounded-md border border-divider bg-surface px-2.5 py-1.5 font-[inherit] text-[14px] text-text caret-accent hover:border-[color-mix(in_srgb,var(--color-text)_45%,transparent)] focus-visible:border-accent focus-visible:outline-offset-0 placeholder:text-neutral-600 light:border-0 light:bg-bg light:px-3.5 light:py-2.5 light:shadow-inset";
 
 export default function Comments({ post }) {
   const { rest } = useData();
@@ -81,7 +81,7 @@ export default function Comments({ post }) {
       </div>
 
       {post.commentsOpen ? (
-        <Card as="form" onSubmit={submit} className="mb-3 gap-2.5 p-4">
+        <Card as="form" elev="none" onSubmit={submit} className="mb-3 gap-2.5 p-4 shadow-sm light:mb-5 light:gap-3.5 light:p-5 light:shadow-raised-lg">
           <div className="flex flex-wrap gap-2.5">
             <input className={cx(input, "max-w-[260px]")} placeholder="Name" aria-label="Name" autoComplete="name" value={cName} onChange={(e) => setIdentity({ cName: e.target.value })} />
             <input className={cx(input, "max-w-[260px]")} type="email" placeholder="Email (not shown)" aria-label="Email" autoComplete="email" value={cEmail} onChange={(e) => setIdentity({ cEmail: e.target.value })} />
@@ -99,11 +99,11 @@ export default function Comments({ post }) {
           {captcha.isV3 && (
             <p className="m-0 text-[11px] text-neutral-600">
               This site is protected by reCAPTCHA and the Google{" "}
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" className="text-neutral-500 hover:text-accent">
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" className="text-neutral-500 hover:text-accent light:hover:text-accent-300">
                 Privacy Policy
               </a>{" "}
               and{" "}
-              <a href="https://policies.google.com/terms" target="_blank" rel="noopener" className="text-neutral-500 hover:text-accent">
+              <a href="https://policies.google.com/terms" target="_blank" rel="noopener" className="text-neutral-500 hover:text-accent light:hover:text-accent-300">
                 Terms of Service
               </a>{" "}
               apply.
@@ -118,8 +118,8 @@ export default function Comments({ post }) {
         const key = "c:" + c.id;
         const isLiked = liked.includes(key);
         return (
-          <div key={key} className="grid grid-cols-[36px_minmax(0,1fr)] gap-3 py-[18px] row-rule">
-            <span className={cx("grid size-9 place-items-center rounded-md text-[13px] text-neutral-200", c.isAuthor ? "bg-accent-700" : AVATARS[i % AVATARS.length])}>{initials(c.name)}</span>
+          <div key={key} className="grid grid-cols-[36px_minmax(0,1fr)] gap-3 py-[18px] row-rule light:mb-3.5 light:gap-3.5 light:rounded-lg light:bg-bg light:bg-none light:px-[18px] light:py-4 light:shadow-inset-sm">
+            <span className={cx("grid size-9 place-items-center rounded-md text-[13px] text-neutral-200 light:rounded-full light:shadow-raised", c.isAuthor ? "bg-accent-700 light:bg-accent-800" : cx(AVATARS[i % AVATARS.length], "light:bg-bg"))}>{initials(c.name)}</span>
             <div>
               <div className="mb-1 flex flex-wrap items-center gap-2">
                 <span className="text-[14px]">{c.name}</span>
@@ -140,11 +140,11 @@ export default function Comments({ post }) {
               </div>
               <p className="m-0 mb-2 text-[14px] leading-[1.65] whitespace-pre-wrap text-neutral-200 text-wrap-pretty">{c.text}</p>
               <div className="flex gap-1">
-                <Button variant="ghost" onClick={() => toggleLike(key)} aria-pressed={isLiked} className={cx("gap-[5px] px-2 py-0.5 text-[12px]", isLiked ? "text-accent" : "text-neutral-400")}>
+                <Button variant="ghost" onClick={() => toggleLike(key)} aria-pressed={isLiked} className={cx("gap-[5px] px-2 py-0.5 text-[12px]", isLiked ? "text-accent light:text-accent-300" : "text-neutral-400 light:text-neutral-400")}>
                   <Heart size={13} weight={isLiked ? "fill" : "regular"} />
                   {isLiked ? 1 : 0}
                 </Button>
-                <Button variant="ghost" onClick={() => reply(c.name)} className="px-2 py-0.5 text-[12px] text-neutral-400">
+                <Button variant="ghost" onClick={() => reply(c.name)} className="px-2 py-0.5 text-[12px] text-neutral-400 light:text-neutral-400">
                   Reply
                 </Button>
               </div>
