@@ -3,6 +3,7 @@
 
 @source not "../dist";
 @source not "../scripts";
+@source not "../docs";
 
 /*
  * Nocturne design-system tokens (design_handoff_wod_game_theme/_ds/.../styles.css).

@@ -26,3 +26,6 @@ Thumbs.db
 .env.*
 !.env.example
 .wp-env.override.json
+
+# Design handoff (local reference only)
+docs/light-theme/
